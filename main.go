@@ -27,6 +27,7 @@ import (
 
 func main() {
 
+	// (#1) TODO: Read from stdin to get a project name
 	projectName := "Example"
 	currentPath, ErrGettingCurrentPath := os.Getwd()
 	if ErrGettingCurrentPath != nil {
@@ -41,7 +42,9 @@ func main() {
 		return
 	}
 
-	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist"}
+	projectPathName := filepath.Join("cmd", projectName)
+
+	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", projectPathName}
 	for _, folder := range folders {
 		folderPath := filepath.Join(projectPath, folder)
 		ErrMakingFolder := os.Mkdir(folderPath, os.ModePerm)
