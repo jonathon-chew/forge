@@ -64,13 +64,12 @@ func main() {
 		}
 	}
 
-	commands := make([][]string, 6)
+	commands := make([][]string, 5)
 	commands[0] = []string{"go", "mod", "init", projectName}
 	commands[1] = []string{"git", "init"}
 	commands[2] = []string{"git", "add", "."}
 	commands[3] = []string{"git", "commit", "-m", "BATMAN"}
 	commands[4] = []string{"go", "mod", "init", projectName}
-	commands[5] = []string{"git", "config", "list", "--global"} // parse user.name to be in the LICENSE
 
 	for _, commmand := range commands {
 		cmd := exec.Command(commmand[0], commmand...)
