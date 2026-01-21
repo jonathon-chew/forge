@@ -1,3 +1,3 @@
-module github.com/jonathon-chew/go-skeleton
+module github.com/jonathon-chew/forge
 
 go 1.25.6
