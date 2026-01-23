@@ -99,37 +99,37 @@ fi
 # Step 6: Push binaries to github
 # ----------------------------
 
-echo -e "${CYAN} Making a dist folder if one does not exist...${RESET}"
-mkdir -p dist
+# echo -e "${CYAN} Making a dist folder if one does not exist...${RESET}"
+# mkdir -p dist
 
-echo -e "${CYAN} Releasing $releaseName...${RESET}"
+# echo -e "${CYAN} Releasing $releaseName...${RESET}"
 
-if [[ $dry == "0" ]]; then
-	# Linux
-	GOOS=linux GOARCH=amd64 go build -o dist/$releaseName-linux-amd64 ./cmd/pipepeek
-	tar -czvf dist/$releaseName-linux-amd64.tar.gz -C dist $releaseName-linux-amd64
+# if [[ $dry == "0" ]]; then
+# 	# Linux
+# 	GOOS=linux GOARCH=amd64 go build -o dist/$releaseName-linux-amd64 ./cmd/pipepeek
+# 	tar -czvf dist/$releaseName-linux-amd64.tar.gz -C dist $releaseName-linux-amd64
 
-	# macOS (Apple Silicon)
-	GOOS=darwin GOARCH=arm64 go build -o dist/$releaseName-darwin-arm64 ./cmd/pipepeek
-	tar -czvf dist/$releaseName-darwin-arm64.tar.gz -C dist $releaseName-darwin-arm64
+# 	# macOS (Apple Silicon)
+# 	GOOS=darwin GOARCH=arm64 go build -o dist/$releaseName-darwin-arm64 ./cmd/pipepeek
+# 	tar -czvf dist/$releaseName-darwin-arm64.tar.gz -C dist $releaseName-darwin-arm64
 
-	# Windows
-	GOOS=windows GOARCH=amd64 go build -o dist/$releaseName-windows-amd64.exe ./cmd/pipepeek
-	zip -j dist/$releaseName-windows-amd64.zip dist/$releaseName-windows-amd64.exe
-fi
+# 	# Windows
+# 	GOOS=windows GOARCH=amd64 go build -o dist/$releaseName-windows-amd64.exe ./cmd/pipepeek
+# 	zip -j dist/$releaseName-windows-amd64.zip dist/$releaseName-windows-amd64.exe
+# fi
 
-echo -e "${CYAN} binaries built and zipped...${RESET}"
+# echo -e "${CYAN} binaries built and zipped...${RESET}"
 
-echo -e "${CYAN} pushing to github using the gh CLI...${RESET}"
+# echo -e "${CYAN} pushing to github using the gh CLI...${RESET}"
 
-if [[ $dry == "0" ]]; then
-	# Create release and upload assets
-	gh release create "$releaseName" \
-		dist/$releaseName-linux-amd64.tar.gz \
-		dist/$releaseName-darwin-arm64.tar.gz \
-		dist/$releaseName-windows-amd64.zip \
-		--title "$releaseName"
-fi
+# if [[ $dry == "0" ]]; then
+# 	# Create release and upload assets
+# 	gh release create "$releaseName" \
+# 		dist/$releaseName-linux-amd64.tar.gz \
+# 		dist/$releaseName-darwin-arm64.tar.gz \
+# 		dist/$releaseName-windows-amd64.zip \
+# 		--title "$releaseName"
+# fi
 
 # ----------------------------
 # Step len -1: Confirmed completed

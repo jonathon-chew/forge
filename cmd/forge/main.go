@@ -2,20 +2,13 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
-)
 
-type Command struct {
-	Name        string
-	Command     []string
-	Fatal       bool
-	Description string
-}
+	runcommand "github.com/jonathon-chew/forge/internal/runCommand"
+)
 
 func main() {
 
@@ -45,7 +38,7 @@ func main() {
 
 	projectPathName := filepath.Join("cmd", projectName)
 
-	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", projectPathName}
+	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", projectPathName, filepath.Join(projectPath, "internal", "cli")}
 	for _, folder := range folders {
 		folderPath := filepath.Join(projectPath, folder)
 		ErrMakingFolder := os.Mkdir(folderPath, os.ModePerm)
@@ -55,7 +48,7 @@ func main() {
 		}
 	}
 
-	files := []string{"README.md", "LICENSE", "scripts/CICD.sh", "scripts/find_unused_exports.sh", "scripts/get_cmd_commands_for_help_file.zsh", ".gitignore"}
+	files := []string{"README.md", "LICENSE", "scripts/CICD.sh", "scripts/find_unused_exports.sh", "scripts/get_cmd_commands_for_help_file.zsh", ".gitignore", filepath.Join(projectPathName, "main.go"), filepath.Join(projectPathName, "internal", "cli", "cli.go")}
 	for _, file := range files {
 		filePath := filepath.Join(projectPath, file)
 		filePointer, ErrMakingFile := os.Create(filePath)
@@ -66,40 +59,21 @@ func main() {
 		filePointer.Close()
 	}
 
-	//	commands := make([][]string, 5)
-	/* commands[0] = []string{"go", "mod", "init", projectName}
-	commands[1] = []string{"git", "init"}
-	commands[2] = []string{"git", "add", "."}
-	commands[3] = []string{"git", "commit", "-m", "BATMAN"}
-	commands[4] = []string{"git", "config", "list", "--global"} // parse user.name to be in the LICENSE */
+	// commands[4] = []string{"git", "config", "list", "--global"} // parse user.name to be in the LICENSE */
 
-	commands := []Command{
-		{"go", []string{"go", "mod", "init", projectName}, false, "init a go project"},
-		{"git", []string{"git", "init"}, true, "init a git project"},
-		{"git", []string{"git", "add", "."}, false, "add everything and start tracking"},
-		{"git", []string{"git", "commit", "-m", "BATMAN"}, false, "This commit has no parents"},
-		{"git", []string{"git", "config", "list", "--global"}, false, "get a user name"},
+	commands := []runcommand.Command{
+		{Name: "go", Command: []string{"go", "mod", "init", projectName}, Fatal: false, Description: "init a go project"},
+		{Name: "git", Command: []string{"git", "init"}, Fatal: true, Description: "init a git project"},
+		{Name: "git", Command: []string{"git", "add", "."}, Fatal: false, Description: "add everything and start tracking"},
+		{Name: "git", Command: []string{"git", "commit", "-m", "BATMAN"}, Fatal: false, Description: "This commit has no parents"},
 	}
 
 	for _, commmand := range commands {
 		if len(commmand.Command) > 0 {
-			cmd := exec.Command(commmand.Command[0], commmand.Command[1:]...)
-			cmd.Dir = projectPath
 
-			var Stdout bytes.Buffer
-			var Stderr bytes.Buffer
-
-			cmd.Stdout = &Stdout
-			cmd.Stderr = &Stderr
-
-			ErrRunningCommand := cmd.Run()
-			if ErrRunningCommand != nil {
-				fmt.Print("error running command: ", commmand.Name, ErrRunningCommand)
-				return
-			}
-
-			if Stderr.Len() > 0 && commmand.Fatal {
-				fmt.Print("error: from the command output: ", Stderr.String())
+			switch commmand.Description {
+			default:
+				runcommand.RunCommands(commmand, projectPath)
 			}
 		}
 	}
