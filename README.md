@@ -61,6 +61,7 @@ example
 ```
 
 ### Output
+```bash
 example
 ├── ./Archive
 ├── ./cmd
@@ -79,6 +80,7 @@ example
     ├── ./scripts/CICD.sh
     ├── ./scripts/find_unused_exports.sh
     └── ./scripts/get_cmd_commands_for_help_file.zsh
+```
 
 ## Philosophy
 
