@@ -29,18 +29,18 @@ func main() {
 		return
 	}
 
-	projectPath := filepath.Join(currentPath, projectName)
-	ErrMakingProjectFolder := os.Mkdir(projectPath, os.ModePerm) // fails if path already exists, this is good hear, but error is ignored when creating the below
+	rootFolder := filepath.Join(currentPath, projectName)
+	ErrMakingProjectFolder := os.Mkdir(rootFolder, os.ModePerm) // fails if path already exists, this is good hear, but error is ignored when creating the below
 	if ErrMakingProjectFolder != nil {
 		fmt.Print("error project already exists: ", ErrMakingProjectFolder)
 		return
 	}
 
-	projectPathName := filepath.Join("cmd", projectName)
+	mainFileFolder := filepath.Join("cmd", projectName)
 
-	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", projectPathName, filepath.Join("internal", "cli")}
+	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", mainFileFolder, filepath.Join("internal", "cli")}
 	for _, folder := range folders {
-		folderPath := filepath.Join(projectPath, folder)
+		folderPath := filepath.Join(rootFolder, folder)
 		ErrMakingFolder := os.Mkdir(folderPath, os.ModePerm)
 		if ErrMakingFolder != nil && ErrMakingFolder != os.ErrExist {
 			fmt.Print("error making folder: ", ErrMakingFolder)
@@ -48,9 +48,9 @@ func main() {
 		}
 	}
 
-	files := []string{"README.md", "LICENSE", "scripts/CICD.sh", "scripts/find_unused_exports.sh", "scripts/get_cmd_commands_for_help_file.zsh", ".gitignore", "internal/cli/cli.go"}
+	files := []string{"README.md", "LICENSE", filepath.Join("scripts", "CICD.sh"), filepath.Join("scripts", "find_unused_exports.sh"), filepath.Join("scripts", "get_cmd_commands_for_help_file.zsh"), ".gitignore", filepath.Join("internal", "cli", "cli.go"), filepath.Join(mainFileFolder, "main.go")}
 	for _, file := range files {
-		filePath := filepath.Join(projectPath, file)
+		filePath := filepath.Join(rootFolder, file)
 		filePointer, ErrMakingFile := os.Create(filePath)
 		if ErrMakingFile != nil {
 			fmt.Print("error making file: ", ErrMakingFile)
@@ -58,13 +58,6 @@ func main() {
 		}
 		filePointer.Close()
 	}
-
-	filePointer, ErrMakingFile := os.Create(filepath.Join(projectPath, projectPathName, "main.go"))
-	if ErrMakingFile != nil {
-		fmt.Print("error making file: ", ErrMakingFile)
-		return
-	}
-	filePointer.Close()
 
 	// commands[4] = []string{"git", "config", "list", "--global"} // parse user.name to be in the LICENSE */
 
@@ -80,7 +73,7 @@ func main() {
 
 			switch commmand.Description {
 			default:
-				runcommand.RunCommands(commmand, projectPath)
+				runcommand.RunCommands(commmand, rootFolder)
 			}
 		}
 	}
