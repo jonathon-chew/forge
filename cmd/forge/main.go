@@ -48,7 +48,7 @@ func main() {
 		}
 	}
 
-	files := []string{"README.md", "LICENSE", "scripts/CICD.sh", "scripts/find_unused_exports.sh", "scripts/get_cmd_commands_for_help_file.zsh", ".gitignore", filepath.Join(projectPathName, "main.go"), filepath.Join("internal", "cli", "cli.go")}
+	files := []string{"README.md", "LICENSE", "scripts/CICD.sh", "scripts/find_unused_exports.sh", "scripts/get_cmd_commands_for_help_file.zsh", ".gitignore", filepath.Join("internal", "cli", "cli.go")}
 	for _, file := range files {
 		filePath := filepath.Join(projectPath, file)
 		filePointer, ErrMakingFile := os.Create(filePath)
@@ -58,6 +58,13 @@ func main() {
 		}
 		filePointer.Close()
 	}
+
+	filePointer, ErrMakingFile := os.Create(filepath.Join(projectPathName, "main.go"))
+	if ErrMakingFile != nil {
+		fmt.Print("error making file: ", ErrMakingFile)
+		return
+	}
+	filePointer.Close()
 
 	// commands[4] = []string{"git", "config", "list", "--global"} // parse user.name to be in the LICENSE */
 
