@@ -71,13 +71,15 @@ gitResponse=$(git status --porcelain)
     echo "${RED} There are uncommitted changes: ${RESET}"
     echo " - Changes not staged for commit: $(git status --porcelain | grep '^ [MADRC]' | wc -l | tr -d ' ')"
     echo " - Changes staged for commit: $(git status --porcelain | grep '^[MADRC]' | wc -l | tr -d ' ')"
-		userChoice=read "Do you wish to continue"
-		if $userChoice == "y" || $userChoice -eq "Y"; then
-				git add .
-				commitMessage=read "What would you like to update git with?"
-				git commit -m $commitMessage
-		else
-						exit 1
+		exit 1
+		# echo "Do you wish to continue? y/Y"
+		# read userChoice
+		# if $userChoice == "y" || $userChoice == "Y"; then
+		# 		git add .
+		# 		commitMessage=read "What would you like to update git with?"
+		# 		git commit -m $commitMessage
+		# else
+		# 		exit 1
 		fi	
 	fi
 fi

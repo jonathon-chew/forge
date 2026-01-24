@@ -38,7 +38,7 @@ func main() {
 
 	projectPathName := filepath.Join("cmd", projectName)
 
-	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", projectPathName, filepath.Join(projectPath, "internal", "cli")}
+	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", projectPathName, filepath.Join("internal", "cli")}
 	for _, folder := range folders {
 		folderPath := filepath.Join(projectPath, folder)
 		ErrMakingFolder := os.Mkdir(folderPath, os.ModePerm)
