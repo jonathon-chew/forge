@@ -59,7 +59,7 @@ func main() {
 		filePointer.Close()
 	}
 
-	filePointer, ErrMakingFile := os.Create(filepath.Join(projectPathName, "main.go"))
+	filePointer, ErrMakingFile := os.Create(filepath.Join(projectPath, projectPathName, "main.go"))
 	if ErrMakingFile != nil {
 		fmt.Print("error making file: ", ErrMakingFile)
 		return
