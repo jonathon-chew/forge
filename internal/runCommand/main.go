@@ -7,10 +7,10 @@ import (
 )
 
 type Command struct {
-	Name        string
 	Command     []string
-	Fatal       bool
+	Name        string
 	Description string
+	Fatal       bool
 }
 
 func RunCommands(command Command, folderPath string) (string, string, error) {
