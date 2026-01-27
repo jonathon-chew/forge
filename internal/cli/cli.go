@@ -87,5 +87,12 @@ func Cli(commands []string) Flags {
 		}
 	}
 
+	if flags.ProjectName == "" {
+		flags.ProjectName = StdInProjectName()
+	}
+	if flags.ProjectType == "" {
+		flags.ProjectType = StdInProjectType()
+	}
+
 	return flags
 }

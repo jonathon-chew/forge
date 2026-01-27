@@ -20,12 +20,6 @@ func main() {
 	}
 
 	// default?
-	if flags.ProjectName == "" {
-		flags.ProjectName = cli.StdInProjectName()
-	}
-	if flags.ProjectType == "" {
-		flags.ProjectType = cli.StdInProjectType()
-	}
 
 	currentPath, ErrGettingCurrentPath := os.Getwd()
 	if ErrGettingCurrentPath != nil {
@@ -52,7 +46,10 @@ func main() {
 
 	default:
 		fmt.Println("error: the project type ", flags.ProjectType, " has not been recognised")
+		ErrCleaningUp := os.Remove(rootFolder)
+		if ErrCleaningUp != nil {
+			fmt.Println("error: unable to remove the root folder")
+		}
 		return
 	}
-
 }
