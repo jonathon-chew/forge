@@ -59,7 +59,10 @@ func Cli(commands []string) Flags {
 
 		switch command {
 		default:
-			aphrodite.PrintError("[ERROR]: did not recognise command " + command)
+			aphrodite.PrintError("[ERROR]: did not recognise command " + command + "\n")
+			if command[0] != '-' {
+				aphrodite.PrintError("please pass in a flag with - " + command + "\n")
+			}
 		case "--help", "-h":
 			aphrodite.PrintInfo(`
 			--help or -h
