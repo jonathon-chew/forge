@@ -33,7 +33,7 @@ func PythonProject(projectName, rootFolder string) {
 		{Name: "git", Command: []string{"git", "init"}, Fatal: true, Description: "init a git project"},
 		{Name: "git", Command: []string{"git", "add", "."}, Fatal: false, Description: "add everything and start tracking"},
 		{Name: "git", Command: []string{"git", "commit", "-m", "BATMAN"}, Fatal: false, Description: "This commit has no parents"},
-		{Name: "Virtual Enviornment", Command: []string{"python3", "-m", "venv", projectName}, Fatal: false, Description: "make a local venv"},
+		{Name: "Virtual Enviornment", Command: []string{"python3", "-m", "venv", projectName + "_venv"}, Fatal: false, Description: "make a local venv"},
 	}
 
 	for _, commmand := range commands {
