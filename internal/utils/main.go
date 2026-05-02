@@ -1,8 +1,9 @@
-package runcommand
+package utils
 
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
 )
 
@@ -13,6 +14,9 @@ type Command struct {
 	Fatal       bool
 }
 
+/*
+Returns stdout, stderr and error with the function in that order
+*/
 func RunCommands(command Command, folderPath string) (string, string, error) {
 	cmd := exec.Command(command.Command[0], command.Command[1:]...)
 	cmd.Dir = folderPath
@@ -33,4 +37,8 @@ func RunCommands(command Command, folderPath string) (string, string, error) {
 		fmt.Print("error: from the command output: ", Stderr.String())
 	}
 	return Stdout.String(), Stderr.String(), nil
+}
+
+func WriteFile(filename string, filecontents []byte) {
+	os.WriteFile(filename, filecontents, os.ModePerm)
 }

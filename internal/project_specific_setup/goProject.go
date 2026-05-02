@@ -3,7 +3,7 @@ package projectspecificsetup
 import (
 	"path/filepath"
 
-	runcommand "github.com/jonathon-chew/forge/internal/runCommand"
+	utils "github.com/jonathon-chew/forge/internal/utils"
 )
 
 func GoProject(projectName, rootFolder string) {
@@ -19,7 +19,7 @@ func GoProject(projectName, rootFolder string) {
 
 	// commands[4] = []string{"git", "config", "list", "--global"} // parse user.name to be in the LICENSE */
 
-	commands := []runcommand.Command{
+	commands := []utils.Command{
 		{Name: "go", Command: []string{"go", "mod", "init", projectName}, Fatal: false, Description: "init a go project"},
 		{Name: "git", Command: []string{"git", "init"}, Fatal: true, Description: "init a git project"},
 		{Name: "git", Command: []string{"git", "add", "."}, Fatal: false, Description: "add everything and start tracking"},
@@ -31,7 +31,7 @@ func GoProject(projectName, rootFolder string) {
 
 			switch commmand.Description {
 			default:
-				runcommand.RunCommands(commmand, rootFolder)
+				utils.RunCommands(commmand, rootFolder)
 			}
 		}
 	}
