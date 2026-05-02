@@ -72,13 +72,14 @@ from setuptools import find_packages
 from setuptools import setup
 
 setup (
-	name="%s",
-	version="v0.1.0",
-	description="",
-	author="%s",
-	author_email="%s",
-	url="",
-	packages=find_packages(exclude=("tests*")),
+    name="%s",
+    version="",
+    description="",
+    author="%s",
+    author_email="%s",
+    url="",
+    package_dir={"": "src"},
+    packages=find_packages(where="src", exclude=("tests*",)),
 )
 	`, projectName, author, author_email)
 
