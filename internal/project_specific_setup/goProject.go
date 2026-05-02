@@ -11,11 +11,11 @@ func GoProject(projectName, rootFolder string) {
 
 	folders := []string{"Archive", "cmd", "pkg", "internal", "doc", "scripts", "dist", mainFileFolder, filepath.Join("internal", "cli")}
 
-	makeFolders(rootFolder, folders)
+	utils.MakeFolders(rootFolder, folders)
 
 	files := []string{"README.md", "LICENSE", filepath.Join("scripts", "CICD.sh"), filepath.Join("scripts", "find_unused_exports.sh"), filepath.Join("scripts", "get_cmd_commands_for_help_file.zsh"), ".gitignore", filepath.Join("internal", "cli", "cli.go"), filepath.Join(mainFileFolder, "main.go")}
 
-	makeFiles(rootFolder, files)
+	utils.MakeFiles(rootFolder, files)
 
 	// commands[4] = []string{"git", "config", "list", "--global"} // parse user.name to be in the LICENSE */
 

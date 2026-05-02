@@ -14,7 +14,7 @@ func PythonProject(projectName, rootFolder string) {
 
 	folders := []string{"Archive", "tests", "src", "docs", mainFileFolder}
 
-	makeFolders(rootFolder, folders)
+	utils.MakeFolders(rootFolder, folders)
 
 	// files := []string{"README.md", "LICENSE", "requirements.txt", filepath.Join(mainFileFolder, "__init__.py"), filepath.Join(mainFileFolder, "__main__.py"), filepath.Join(mainFileFolder, "moduel1.py"), filepath.Join(mainFileFolder, "moduel2.py"), filepath.Join("tests", "__init__.py"), filepath.Join("tests", "test1.py"), filepath.Join("tests", "test2.py")}
 	files := []string{"README.md", "LICENSE", "requirements.txt", "setup.py"}
@@ -29,7 +29,7 @@ func PythonProject(projectName, rootFolder string) {
 		files = append(files, filepath.Join("tests", file))
 	}
 
-	makeFiles(rootFolder, files)
+	utils.MakeFiles(rootFolder, files)
 
 	var author, author_email string
 
@@ -67,20 +67,20 @@ func PythonProject(projectName, rootFolder string) {
 		}
 	}
 
-	var filecontents = fmt.Appendf(nil, `
-	from setuptools import find_packages
-	from setuptools import setup
+	var setup = fmt.Appendf(nil, `
+from setuptools import find_packages
+from setuptools import setup
 
-	setup (
-		name="%s",
-		version="v0.1.0,
-		description="",
-		author="%s",
-		author_email="%s",
-		url="",
-		packages=find_packages(exclude=("tests*")),
-	)
+setup (
+	name="%s",
+	version="v0.1.0",
+	description="",
+	author="%s",
+	author_email="%s",
+	url="",
+	packages=find_packages(exclude=("tests*")),
+)
 	`, projectName, author, author_email)
 
-	utils.WriteFile("setup.py", filecontents)
+	utils.WriteFile(filepath.Join(rootFolder, "setup.py"), setup)
 }

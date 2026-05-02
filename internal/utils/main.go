@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
+
+	aphrodite "github.com/jonathon-chew/Aphrodite"
 )
 
 type Command struct {
@@ -40,5 +43,31 @@ func RunCommands(command Command, folderPath string) (string, string, error) {
 }
 
 func WriteFile(filename string, filecontents []byte) {
-	os.WriteFile(filename, filecontents, os.ModePerm)
+	err := os.WriteFile(filename, filecontents, os.ModePerm)
+	if err != nil {
+		aphrodite.PrintError(err.Error())
+	}
+}
+
+func MakeFolders(rootFolder string, folders []string) {
+	for _, folder := range folders {
+		folderPath := filepath.Join(rootFolder, folder)
+		ErrMakingFolder := os.Mkdir(folderPath, os.ModePerm)
+		if ErrMakingFolder != nil && ErrMakingFolder != os.ErrExist {
+			fmt.Print("error making folder: ", ErrMakingFolder)
+			return
+		}
+	}
+}
+
+func MakeFiles(rootFolder string, files []string) {
+	for _, file := range files {
+		filePath := filepath.Join(rootFolder, file)
+		filePointer, ErrMakingFile := os.Create(filePath)
+		if ErrMakingFile != nil {
+			fmt.Print("error making file: ", ErrMakingFile)
+			return
+		}
+		filePointer.Close()
+	}
 }
