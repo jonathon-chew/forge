@@ -80,8 +80,13 @@ setup (
     url="",
     package_dir={"": "src"},
     packages=find_packages(where="src", exclude=("tests*",)),
+	entry_points={
+        "console_scripts": [
+            "%s=%s.main:main",
+        ],
+    },
 )
-	`, projectName, author, author_email)
+	`, projectName, author, author_email, projectName, projectName)
 
 	utils.WriteFile(filepath.Join(rootFolder, "setup.py"), setup)
 }
