@@ -77,6 +77,10 @@ gitResponse=$(git status --porcelain)
 		# if $userChoice == "y" || $userChoice == "Y"; then
 		# 		git add .
 		# 		commitMessage=read "What would you like to update git with?"
+    # if commitMessage -ne "^[:space:]" | # needs to be double checked?!
+    # grep -qEi '^(feat|fix|build|chore|ci|delete|docs|perf|new|refactor|revert|style|test|update)(\([^)]+\))?!?:[[:space:]]+'; then
+    # error "commit message must follow Conventional Commits style"
+    # fi
 		# 		git commit -m $commitMessage
 		# else
 		# 		exit 1
