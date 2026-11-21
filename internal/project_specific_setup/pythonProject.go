@@ -5,8 +5,55 @@ import (
 	"path/filepath"
 	"strings"
 
+	nonprojectspecficsetup "github.com/jonathon-chew/forge/internal/non_project_specfic_setup"
 	utils "github.com/jonathon-chew/forge/internal/utils"
 )
+
+func setupFile(rootFolder, author, author_email, projectName string) {
+	var setup = fmt.Appendf(nil, `
+from setuptools import find_packages
+from setuptools import setup
+
+setup (
+    name="%s",
+    version="",
+    description="",
+    author="%s",
+    author_email="%s",
+    url="",
+    package_dir={"": "src"},
+    packages=find_packages(where="src", exclude=("tests*",)),
+	entry_points={
+        "console_scripts": [
+            "%s=%s.main:main",
+        ],
+    },
+)
+	`, projectName, author, author_email, projectName, projectName)
+
+	utils.WriteFile(filepath.Join(rootFolder, "setup.py"), setup)
+}
+
+func testingFile(rootFolder, projectName string) {
+	var testing = fmt.Append(nil, fmt.Sprintf(`
+	import sys
+	import unittest
+
+	import src.%s
+
+	class ExampleTest(unittest.TestCase):
+
+		def setUpClass(cls) -> None:
+			cls.DEBUG = True
+			cls.VERBSON = True
+		
+
+	if __name__ == "__main__":
+		unittest.main()
+	`, projectName))
+
+	utils.WriteFile(filepath.Join(rootFolder, "tests", "test1.py"), testing)
+}
 
 func PythonProject(projectName, rootFolder string) {
 
@@ -67,26 +114,8 @@ func PythonProject(projectName, rootFolder string) {
 		}
 	}
 
-	var setup = fmt.Appendf(nil, `
-from setuptools import find_packages
-from setuptools import setup
+	setupFile(rootFolder, author, author_email, projectName)
+	testingFile(rootFolder, projectName)
 
-setup (
-    name="%s",
-    version="",
-    description="",
-    author="%s",
-    author_email="%s",
-    url="",
-    package_dir={"": "src"},
-    packages=find_packages(where="src", exclude=("tests*",)),
-	entry_points={
-        "console_scripts": [
-            "%s=%s.main:main",
-        ],
-    },
-)
-	`, projectName, author, author_email, projectName, projectName)
-
-	utils.WriteFile(filepath.Join(rootFolder, "setup.py"), setup)
+	nonprojectspecficsetup.CICD_Script(rootFolder)
 }
