@@ -93,7 +93,7 @@ func GoProject(projectName, rootFolder string) {
 		}
 	}
 
-	mainbuilder(filepath.Join(rootFolder, "src", projectName, "main.go"))
+	mainbuilder(filepath.Join(rootFolder, "src", projectName))
 	cli_builder(filepath.Join(rootFolder, "internal", "cli", "cli.go"))
 	nonprojectspecficsetup.CICD_Script(rootFolder)
 }

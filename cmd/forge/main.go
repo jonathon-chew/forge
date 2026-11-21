@@ -12,19 +12,20 @@ import (
 var flags cli.Flags
 
 func main() {
-	if len(os.Args) >= 2 {
-		flags = cli.Cli(os.Args[1:])
-	} else {
-		flags.ProjectName = cli.StdInProjectName()
-		flags.ProjectType = cli.StdInProjectType()
-	}
-
-	// default?
-
 	currentPath, ErrGettingCurrentPath := os.Getwd()
 	if ErrGettingCurrentPath != nil {
 		fmt.Print("error getting current path: ", ErrGettingCurrentPath)
 		return
+	}
+	run(os.Args[1:], currentPath)
+}
+
+func run(args []string, currentPath string) {
+	if len(args) >= 2 {
+		flags = cli.Cli(args)
+	} else {
+		flags.ProjectName = cli.StdInProjectName()
+		flags.ProjectType = cli.StdInProjectType()
 	}
 
 	rootFolder := filepath.Join(currentPath, flags.ProjectName)
