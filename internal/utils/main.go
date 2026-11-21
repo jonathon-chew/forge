@@ -43,6 +43,10 @@ func RunCommands(command Command, folderPath string) (string, string, error) {
 }
 
 func WriteFile(filename string, filecontents []byte) {
+	if err := os.MkdirAll(filepath.Dir(filename), os.ModePerm); err != nil {
+		aphrodite.PrintError(err.Error())
+		return
+	}
 	err := os.WriteFile(filename, filecontents, os.ModePerm)
 	if err != nil {
 		aphrodite.PrintError(err.Error())
@@ -52,8 +56,8 @@ func WriteFile(filename string, filecontents []byte) {
 func MakeFolders(rootFolder string, folders []string) {
 	for _, folder := range folders {
 		folderPath := filepath.Join(rootFolder, folder)
-		ErrMakingFolder := os.Mkdir(folderPath, os.ModePerm)
-		if ErrMakingFolder != nil && ErrMakingFolder != os.ErrExist {
+		ErrMakingFolder := os.MkdirAll(folderPath, os.ModePerm)
+		if ErrMakingFolder != nil {
 			fmt.Print("error making folder: ", ErrMakingFolder)
 			return
 		}
@@ -63,6 +67,10 @@ func MakeFolders(rootFolder string, folders []string) {
 func MakeFiles(rootFolder string, files []string) {
 	for _, file := range files {
 		filePath := filepath.Join(rootFolder, file)
+		if err := os.MkdirAll(filepath.Dir(filePath), os.ModePerm); err != nil {
+			fmt.Print("error making file parent folder: ", err)
+			return
+		}
 		filePointer, ErrMakingFile := os.Create(filePath)
 		if ErrMakingFile != nil {
 			fmt.Print("error making file: ", ErrMakingFile)
